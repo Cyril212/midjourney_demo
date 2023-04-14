@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:midjourney_demo/detail_screen.dart';
 import 'package:neon_widgets/neon_widgets.dart';
 
 void main() {
@@ -67,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
+                    fit: BoxFit.fitHeight,
                     image: Image.asset('assets/background.png').image)),
           ),
           const ParticleField(),
@@ -118,13 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 10,
                   ),
                   Text(
-                    "Find the meaning of your life by owning\nyour shit"
+                    "Find the meaning of your life by owning\nyour life"
                         .toUpperCase(),
                     style: GoogleFonts.aBeeZee().copyWith(
                         color: Colors.white.withOpacity(0.7),
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.italic,
-                        letterSpacing: 2,
+                        letterSpacing: 1.5,
                         height: 2.5,
                         fontSize: 6),
                   ),
@@ -133,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Align(
-            alignment: Alignment(-1, 0.9),
+            alignment: const Alignment(-1, 0.9),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,21 +207,30 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 36.0),
                       child: Row(
                         children: [
-                          Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    stops: [
-                                      0.1,
-                                      0.9
-                                    ],
-                                    colors: [
-                                      Color(0xfff9ba32),
-                                      Color(0xfff9ba32).withOpacity(0.8)
-                                    ]),
-                                shape: BoxShape.circle),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const DetailScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 24,
+                              width: 24,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      stops: [
+                                        0.1,
+                                        0.9
+                                      ],
+                                      colors: [
+                                        Color(0xfff9ba32),
+                                        Color(0xfff9ba32).withOpacity(0.8)
+                                      ]),
+                                  shape: BoxShape.circle),
+                            ),
                           ),
                           SizedBox(
                             width: 8,
@@ -327,11 +338,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(right: 28.0),
                       child: CustomPaint(
-                        size: Size(20, 20),
+                        size: const Size(20, 20),
                         painter: RoundedSmilePainter(),
                       ),
                     )
@@ -376,7 +387,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 letterSpacing: 2.5,
                                 fontSize: 9),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Text(
@@ -392,11 +403,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(right: 24.0),
                       child: CustomPaint(
-                        size: Size(26,26),
+                        size: const Size(26, 26),
                         painter: CirclePainter(),
                       ),
                     )
@@ -405,11 +416,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          // Align(
-          //   alignment: const Alignment(-1, -0.8),
-          //   child: Padding(padding: EdgeInsets.,
-          //   child:,),
-          // )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
