@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:midjourney_demo/detail_screen.dart';
 import 'package:neon_widgets/neon_widgets.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,22 +33,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -56,36 +50,36 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fitHeight,
-                    image: Image.asset('assets/background.png').image)),
-          ),
-          const ParticleField(),
-          const Align(alignment: Alignment.topRight, child: MoonAnimation()),
-          const Align(alignment: Alignment.topRight, child: BirdAnimation()),
-          Align(
-            alignment: const Alignment(-1, -0.86),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 36),
-              child: Column(
+        body: Stack(children: [
+      Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: Image.asset('assets/background.png').image)),
+      ),
+      const ParticleField(),
+      const MoonAnimation(),
+      const BirdAnimation(),
+      Align(
+        alignment: const Alignment(-1, -0.83),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 36),
+          child: AnimationLimiter(
+            child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 6.0),
-                    child: Text(
+                children: AnimationConfiguration.toStaggeredList(
+                  duration: const Duration(seconds: 1),
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    horizontalOffset: -150.0,
+                    child: FadeInAnimation(
+                      child: widget,
+                    ),
+                  ),
+                  children: [
+                    Text(
                       "Pinitgtem".toUpperCase(),
                       style: GoogleFonts.aBeeZee().copyWith(
                           color: Colors.white,
@@ -93,52 +87,61 @@ class _MyHomePageState extends State<MyHomePage> {
                           letterSpacing: 2.5,
                           fontSize: 9),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 36,
-                  ),
-                  Text(
-                    "Nelaicke",
-                    style: GoogleFonts.aBeeZee().copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 2.5,
-                        fontSize: 17.5),
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  Text(
-                    "New way of life".toUpperCase(),
-                    style: GoogleFonts.aBeeZee().copyWith(
-                        color: Colors.yellow,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 2,
-                        fontSize: 6),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Find the meaning of your life by owning\nyour life"
-                        .toUpperCase(),
-                    style: GoogleFonts.aBeeZee().copyWith(
-                        color: Colors.white.withOpacity(0.7),
-                        fontWeight: FontWeight.w300,
-                        fontStyle: FontStyle.italic,
-                        letterSpacing: 1.5,
-                        height: 2.5,
-                        fontSize: 6),
-                  ),
-                ],
-              ),
-            ),
+                    const SizedBox(
+                      height: 36,
+                    ),
+                    Text(
+                      "Nelaicke",
+                      style: GoogleFonts.aBeeZee().copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 2.5,
+                          fontSize: 17.5),
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    Text(
+                      "New way of life".toUpperCase(),
+                      style: GoogleFonts.aBeeZee().copyWith(
+                          color: Colors.yellow,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 2,
+                          fontSize: 6),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Find the meaning of your life by owning\nyour life"
+                          .toUpperCase(),
+                      style: GoogleFonts.aBeeZee().copyWith(
+                          color: Colors.white.withOpacity(0.7),
+                          fontWeight: FontWeight.w300,
+                          fontStyle: FontStyle.italic,
+                          letterSpacing: 1.5,
+                          height: 2.5,
+                          fontSize: 6),
+                    ),
+                  ],
+                )),
           ),
-          Align(
-            alignment: const Alignment(-1, 0.9),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+      ),
+      Align(
+        alignment: const Alignment(-1, 0.9),
+        child: AnimationLimiter(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(seconds: 1),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: widget,
+                ),
+              ),
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 36),
@@ -161,46 +164,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       const SizedBox(
                         height: 8,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          "Define your state".toUpperCase(),
-                          style: GoogleFonts.aBeeZee().copyWith(
-                              color: Colors.white.withOpacity(0.7),
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.italic,
-                              letterSpacing: 2,
-                              height: 2.5,
-                              fontSize: 7),
-                        ),
+                      Text(
+                        "Define your state".toUpperCase(),
+                        style: GoogleFonts.aBeeZee().copyWith(
+                            color: Colors.white.withOpacity(0.7),
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.italic,
+                            letterSpacing: 2,
+                            height: 2.5,
+                            fontSize: 7),
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                  child: SliderTheme(
-                      data: const SliderThemeData(
-                        thumbColor: Color(0xffe2855f),
-                        trackHeight: 3,
-                        thumbShape: RoundSliderThumbShape(
-                          enabledThumbRadius: 3,
-                        ),
-                        trackShape: GradientRectSliderTrackShape(
-                            gradient: LinearGradient(colors: <Color>[
-                              Color(0xff234853),
-                              Color(0xff60214e),
-                              Color(0xff300f3a)
-                            ]),
-                            darkenInactive: false),
-                      ),
-                      child: Slider(
-                        min: 0,
-                        max: 10,
-                        value: 10,
-                        onChanged: (double value) {},
-                      )),
-                ),
+                const HappinessSlider(),
                 Row(
                   children: [
                     Padding(
@@ -253,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ]),
                                 shape: BoxShape.circle),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
                           Container(
@@ -274,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             // decoration: BoxDecoration(
                             //     color: Color(0xfffbc137), shape: BoxShape.circle),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
                           Container(
@@ -348,29 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     )
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                  child: SliderTheme(
-                      data: const SliderThemeData(
-                        trackHeight: 3,
-                        thumbShape: RoundSliderThumbShape(
-                          enabledThumbRadius: 3,
-                        ),
-                        trackShape: GradientRectSliderTrackShape(
-                            gradient: LinearGradient(colors: <Color>[
-                              Color(0xff592036),
-                              Color(0xff321341),
-                            ]),
-                            darkenInactive: false),
-                      ),
-                      child: Slider(
-                        min: 0,
-                        max: 10,
-                        value: 5,
-                        thumbColor: Colors.orange,
-                        onChanged: (double value) {},
-                      )),
-                ),
+                const FocusSlider(),
                 Row(
                   children: [
                     Padding(
@@ -416,9 +371,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-        ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        ),
+      )
+      // This trailing comma makes auto-formatting nicer for build methods.
+    ]));
   }
 }
 
@@ -593,28 +549,43 @@ class BirdAnimationState extends State<BirdAnimation>
     parent: _controller,
     curve: Curves.easeOut,
   ));
+  late final StreamSubscription<GyroscopeEvent> _gyroscopeSubscription;
+  double x = 0;
+  double y = 0;
 
   @override
   void initState() {
     super.initState();
 
+    _gyroscopeSubscription = gyroscopeEvents.listen((GyroscopeEvent event) {
+      // Get the current timestamp
+      setState(() {
+        x = event.x;
+        y = event.y;
+      });
+    });
     // Start the animation
     _controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _animation,
-      child: Image.asset(
-        'assets/bird.png',
-        scale: 3.25,
+    return AnimatedAlign(
+      duration: const Duration(milliseconds: 200),
+      alignment: Alignment(1.0 + y * 0.03, -1.0 + x * 0.02),
+      child: SlideTransition(
+        position: _animation,
+        child: Image.asset(
+          'assets/bird.png',
+          scale: 3.25,
+        ),
       ),
     );
   }
 
   @override
   void dispose() {
+    _gyroscopeSubscription.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -641,27 +612,43 @@ class MoonAnimationState extends State<MoonAnimation>
     curve: Curves.easeInOutCubicEmphasized,
   ));
 
+  late final StreamSubscription<GyroscopeEvent> _gyroscopeSubscription;
+  double x = 0;
+  double y = 0;
+
   @override
   void initState() {
     super.initState();
 
+    _gyroscopeSubscription = gyroscopeEvents.listen((GyroscopeEvent event) {
+      // Get the current timestamp
+      setState(() {
+        x = event.x;
+        y = event.y;
+      });
+    });
     // Start the animation
     _controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _animation,
-      child: Image.asset(
-        'assets/moon.png',
-        scale: 3.25,
+    return AnimatedAlign(
+      duration: const Duration(milliseconds: 200),
+      alignment: Alignment(1.0 + y * 0.03, -1.0 + x * 0.02),
+      child: SlideTransition(
+        position: _animation,
+        child: Image.asset(
+          'assets/moon.png',
+          scale: 3.25,
+        ),
       ),
     );
   }
 
   @override
   void dispose() {
+    _gyroscopeSubscription.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -836,5 +823,90 @@ class CirclePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class HappinessSlider extends StatefulWidget {
+  const HappinessSlider({Key? key}) : super(key: key);
+
+  @override
+  State<HappinessSlider> createState() => _HappinessSliderState();
+}
+
+class _HappinessSliderState extends State<HappinessSlider> {
+  double currentValue = 10;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+      child: SliderTheme(
+          data: const SliderThemeData(
+            thumbColor: Color(0xffe2855f),
+            trackHeight: 3,
+            thumbShape: RoundSliderThumbShape(
+              enabledThumbRadius: 3,
+            ),
+            trackShape: GradientRectSliderTrackShape(
+                gradient: LinearGradient(colors: <Color>[
+                  Color(0xff234853),
+                  Color(0xff60214e),
+                  Color(0xff300f3a)
+                ]),
+                darkenInactive: false),
+          ),
+          child: Slider(
+            min: 0,
+            max: 10,
+            value: currentValue,
+            onChanged: (double value) {
+              setState(() {
+                currentValue = value;
+              });
+            },
+          )),
+    );
+  }
+}
+
+class FocusSlider extends StatefulWidget {
+  const FocusSlider({Key? key}) : super(key: key);
+
+  @override
+  State<FocusSlider> createState() => _FocusSliderState();
+}
+
+class _FocusSliderState extends State<FocusSlider> {
+  double currentValue = 10;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+      child: SliderTheme(
+          data: const SliderThemeData(
+            trackHeight: 3,
+            thumbShape: RoundSliderThumbShape(
+              enabledThumbRadius: 3,
+            ),
+            trackShape: GradientRectSliderTrackShape(
+                gradient: LinearGradient(colors: <Color>[
+                  Color(0xff592036),
+                  Color(0xff321341),
+                ]),
+                darkenInactive: false),
+          ),
+          child: Slider(
+            min: 0,
+            max: 10,
+            value: currentValue,
+            thumbColor: Colors.orange,
+            onChanged: (double value) {
+              setState(() {
+                currentValue = value;
+              });
+            },
+          )),
+    );
   }
 }
